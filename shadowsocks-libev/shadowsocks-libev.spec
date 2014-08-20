@@ -30,7 +30,7 @@ install -d %{buildroot}%{_sysconfdir}
 install -m 644 %{SOURCE1} %{buildroot}/%{_sysconfdir}
 
 install -d %{buildroot}%{_initddir}
-install -m 644 %{SOURCE2} %{buildroot}/%{_initddir}
+install -m 755 %{SOURCE2} %{buildroot}/%{_initddir}
 
 %files
 %defattr(-,root,root)
