@@ -4,7 +4,7 @@ ihavee-rpm
 Spec and source file to build rpms
 
 
-mv files (except spec file) to SOURCES directory
+mv files (exclude spec file) to SOURCES directory
 
 and then
 
