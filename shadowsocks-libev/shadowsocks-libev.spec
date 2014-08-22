@@ -1,11 +1,14 @@
+%global commit e9a530f9dcd3d94e8dcbd341b5e0ccd5bc71cd95
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
+
 Name:           shadowsocks-libev
 Version:	1.4.6
 Release:	1%{?dist}
 License:	GPL-3
 Summary:	a lightweight secured scoks5 proxy for embedded devices and low end boxes.
-Url:		https://github.com/madeye/shadowsocks-libev
+Url:		https://github.com/madeye/%{name}
 Group:		Applications/Internet
-Source0:	https://github.com/madeye/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:	%{url}/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
 Source1:	%{name}.json
 Source2:	%{name}
 Packager:	Havanna <registerdedicated(at)gmail.com>
@@ -16,7 +19,7 @@ BuildRoot: 	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXX)
 shadowsocks-libev is a lightweight secured scoks5 proxy for embedded devices and low end boxes.
 
 %prep
-%setup -q
+%setup -q %{name}-%{commit}
 
 %build
 %configure --prefix=%{_prefix}
