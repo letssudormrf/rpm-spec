@@ -12,6 +12,7 @@ Source0:	%{url}/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
 Source1:	%{name}.json
 Source2:	ss-local.service
 Source3:	ss-server.service
+Source4:	%{name}
 Packager:	Havanna <registerdedicated(at)gmail.com>
 BuildRequires:	autoconf libtool gcc openssl-devel
 BuildRoot: 	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXX)
@@ -23,6 +24,7 @@ shadowsocks-libev is a lightweight secured scoks5 proxy for embedded devices and
 %setup -qn %{name}-%{commit}
 
 %build
+export CFLAGS="-O2"
 %configure --prefix=%{_prefix}
 make %{?_smp_mflags}
 
@@ -33,20 +35,35 @@ make DESTDIR=%{buildroot} install
 install -d %{buildroot}%{_sysconfdir}
 install -m 644 %{SOURCE1} %{buildroot}/%{_sysconfdir}
 
-install -d %{buildroot}%{_unitdir}
-install -m 644 %{SOURCE2} %{buildroot}/%{_unitdir}
-install -m 644 %{SOURCE3} %{buildroot}/%{_unitdir}
+%if 0%{?rhel} >= 7
+	install -d %{buildroot}%{_unitdir}
+	install -m 644 %{SOURCE2} %{buildroot}/%{_unitdir}
+	install -m 644 %{SOURCE3} %{buildroot}/%{_unitdir}
+%endif
+
+%if 0%{?rhel} == 6
+	install -d %{buildroot}%{_initddir}
+	install -m 0755 %{SOURCE4} %{buildroot}%{_initddir}
+%endif
 
 %files
 %defattr(-,root,root)
 %doc Changes README.md COPYING LICENSE
 %config %{_sysconfdir}/shadowsocks-libev.json
-%config %{_unitdir}/ss-local.service
-%config %{_unitdir}/ss-server.service
+
 %{_bindir}/ss-local
 %{_bindir}/ss-redir
 %{_bindir}/ss-server
 %{_bindir}/ss-tunnel
 %{_mandir}/man8/shadowsocks.8.gz
+
+%if 0%{?rhel} >= 7
+	%config %{_unitdir}/ss-local.service
+	%config %{_unitdir}/ss-server.service
+%endif
+
+%if 0%{?rhel} == 6
+	%config %{_initddir}/shadowsocks-libev
+%endif
 
 %changelog
