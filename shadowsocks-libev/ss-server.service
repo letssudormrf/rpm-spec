@@ -1,0 +1,12 @@
+[Unit]
+Description=Shadowsocks-libev Server
+Afer=network.target
+
+[Service]
+Type=forking
+PIDFile=/run/ss-server.pid
+ExecStart=/usr/bin/ss-server -c /etc/shadowsocks-libev.json -f /run/ss-server.pid
+ExecStopPost=/usr/bin/rm -f /run/ss-server.pid
+
+[Install]
+WantedBy=multi-user.target

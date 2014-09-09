@@ -11,6 +11,6 @@ and then
     spectool -R -g /path/name.spec
     rpmbuild -bb /path/name.spec
 
-The spec has been tested only on EL6 with the EPEL repo enabled, but should also work on recent Fedoras, too.
+The spec has been tested only on EL7 with the EPEL repo enabled, but should also work on recent Fedoras, too.
 
 You may need to modify version in the spec file
