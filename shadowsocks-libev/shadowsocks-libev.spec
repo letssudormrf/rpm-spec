@@ -1,7 +1,7 @@
 %global commit e9a530f9dcd3d94e8dcbd341b5e0ccd5bc71cd95
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
-Name:           shadowsocks-libev
+Name:		shadowsocks-libev
 Version:	1.4.6
 Release:	1%{?dist}
 License:	GPL-3
@@ -44,6 +44,16 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}
 %if 0%{?rhel} == 6
 	install -d %{buildroot}%{_initddir}
 	install -m 0755 %{SOURCE4} %{buildroot}%{_initddir}
+%endif
+
+%if 0%{?rhel} < 7
+%post
+/sbin/chkconfig --add %{name}
+%preun
+if [$ = 0]; then
+	/sbin/service %{name} stop
+	/sbin/chkconfig --del %{name}
+fi
 %endif
 
 %files
