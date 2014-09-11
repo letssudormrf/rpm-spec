@@ -41,7 +41,7 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}
 	install -m 0644 %{SOURCE3} %{buildroot}%{_unitdir}
 %endif
 
-%if 0%{?rhel} == 6
+%if 0%{?rhel} < 7
 	install -d %{buildroot}%{_initddir}
 	install -m 0755 %{SOURCE4} %{buildroot}%{_initddir}
 %endif
@@ -72,7 +72,7 @@ fi
 	%config %{_unitdir}/ss-server.service
 %endif
 
-%if 0%{?rhel} == 6
+%if 0%{?rhel} < 7
 	%config %{_initddir}/shadowsocks-libev
 %endif
 
