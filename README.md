@@ -3,8 +3,10 @@ ihavee-rpm
 
 Spec and source file to build rpms
 
+    echo "%_topdir %(echo $HOME)/rpmbuild" >> ~/.rpmmacros
+    mkdir -p ~/rpmbuild/{BUILD,RPMS,S{OURCE,PEC,RPM}S}
 
-mv files (exclude spec file) to SOURCES directory
+mv files (exclude spec file) to $HOME/rpmbuild/SOURCES
 
 and then
 
