@@ -73,3 +73,5 @@ fi
 %endif
 
 %changelog
+* Fri Sep 12 2014 Havanna <registerdedicated(at)gmail.com> - 1.4.7-1
+- version bump to 1.4.7
