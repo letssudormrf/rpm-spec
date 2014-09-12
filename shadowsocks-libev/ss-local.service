@@ -1,6 +1,6 @@
 [Unit]
 Description=Shadowsocks-libev local
-Afer=network.target
+After=network.target
 
 [Service]
 Type=forking
