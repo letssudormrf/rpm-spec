@@ -1,8 +1,8 @@
-%global commit d37f8d302532a8d442233d9b752324ffff99bbd0
+%global commit 5d7dd372fcb8e241497413f357ae8a2925b2f6c6
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:		shadowsocks-libev
-Version:	1.4.7
+Version:	1.4.8
 Release:	1%{?dist}
 License:	GPL-3
 Summary:	a lightweight secured scoks5 proxy for embedded devices and low end boxes.
