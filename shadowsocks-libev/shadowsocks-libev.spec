@@ -61,7 +61,7 @@ fi
 %doc Changes README.md COPYING LICENSE
 %config %{_sysconfdir}
 
-%{_bindir}
+%{_bindir}/*
 %{_mandir}
 
 %if 0%{?rhel} >= 7
