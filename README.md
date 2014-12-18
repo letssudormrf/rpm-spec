@@ -8,9 +8,12 @@ Spec and source file to build rpms
 
 mv files (exclude spec file) to $HOME/rpmbuild/SOURCES
 
-and then
+download source package
 
     spectool -R -g /path/name.spec
+
+build rpm package
+
     rpmbuild -bb /path/name.spec
 
 The spec has been tested only on Centos 6.5 and later, it should also work on recent Fedoras, too.
