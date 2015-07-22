@@ -5,9 +5,10 @@
 %define nginx_home %{_localstatedir}/cache/nginx
 %define nginx_user nginx
 %define nginx_group nginx
+%define nginx_loggroup adm
 
 # distribution specific definitions
-%define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7)
+%define use_systemd (0%{?fedora} && 0%{?fedora} >= 18) || (0%{?rhel} && 0%{?rhel} >= 7) || (0%{?suse_version} == 1315)
 
 %if 0%{?rhel}  == 5
 Group: System Environment/Daemons
@@ -39,17 +40,28 @@ Epoch: 1
 %define with_spdy 1
 %endif
 
-%if 0%{?suse_version}
+%if 0%{?suse_version} == 1110
 Group: Productivity/Networking/Web/Servers
 BuildRequires: libopenssl-devel
 Requires(pre): pwdutils
+%define nginx_loggroup trusted
+%endif
+
+%if 0%{?suse_version} == 1315
+Group: Productivity/Networking/Web/Servers
+BuildRequires: libopenssl-devel
+BuildRequires: systemd
+Requires(pre): shadow
+Requires: systemd
+%define with_spdy 1
+%define nginx_loggroup trusted
 %endif
 
 # end of distribution specific definitions
 
 Summary: High performance web server
 Name: nginx
-Version: 1.6.2
+Version: 1.8.0
 Release: 1%{?dist}.ngx
 Vendor: nginx inc.
 URL: http://nginx.org/
@@ -64,8 +76,9 @@ Source6: nginx.vh.example_ssl.conf
 Source7: nginx.suse.init
 Source8: nginx.service
 Source9: nginx.upgrade.sh
-Source10: https://github.com/yaoweibin/ngx_http_substitutions_filter_module/archive/%{ngx_http_substitutions_filter_module_commit}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit}.tar.gz
-Source11: https://github.com/cuber/ngx_http_google_filter_module/archive/%{ngx_http_google_filter_module_commit}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit}.tar.gz
+Source10: nginx.suse.logrotate
+Source11: https://github.com/yaoweibin/ngx_http_substitutions_filter_module/archive/%{ngx_http_substitutions_filter_module_commit}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit}.tar.gz
+Source12: https://github.com/cuber/ngx_http_google_filter_module/archive/%{ngx_http_google_filter_module_commit}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit}.tar.gz
 
 License: 2-clause BSD-like license
 
@@ -86,14 +99,18 @@ Requires: nginx
 %description debug
 Not stripped version of nginx built with the debugging log support.
 
+%if 0%{?suse_version} == 1315
+%debug_package
+%endif
+
 %prep
 %setup -q
 
 #%setup -qn ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit}
-%{__tar} xzvf %{SOURCE10}
-%setup -T -D -a 10
 %{__tar} xzvf %{SOURCE11}
 %setup -T -D -a 11
+%{__tar} xzvf %{SOURCE12}
+%setup -T -D -a 12
 
 %build
 ./configure \
@@ -131,8 +148,8 @@ Not stripped version of nginx built with the debugging log support.
         --with-debug \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit} \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit} \
+		--add-module=%{_builddir}/%{name}-%{version}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit} \
+		--add-module=%{_builddir}/%{name}-%{version}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit} \
         $*
 make %{?_smp_mflags}
 %{__mv} %{_builddir}/%{name}-%{version}/objs/nginx \
@@ -171,8 +188,8 @@ make %{?_smp_mflags}
         --with-ipv6 \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit} \
-	--add-module=%{_builddir}/%{name}-%{version}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit} \
+		--add-module=%{_builddir}/%{name}-%{version}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit} \
+		--add-module=%{_builddir}/%{name}-%{version}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit} \
         $*
 make %{?_smp_mflags}
 
@@ -214,7 +231,7 @@ make %{?_smp_mflags}
 %else
 # install SYSV init stuff
 %{__mkdir} -p $RPM_BUILD_ROOT%{_initrddir}
-%if 0%{?suse_version}
+%if 0%{?suse_version} == 1110
 %{__install} -m755 %{SOURCE7} \
    $RPM_BUILD_ROOT%{_initrddir}/nginx
 %else
@@ -225,8 +242,14 @@ make %{?_smp_mflags}
 
 # install log rotation stuff
 %{__mkdir} -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+%if 0%{?suse_version}
+%{__install} -m 644 -p %{SOURCE10} \
+   $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/nginx
+%else
 %{__install} -m 644 -p %{SOURCE1} \
    $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/nginx
+%endif
+
 %{__install} -m644 %{_builddir}/%{name}-%{version}/objs/nginx.debug \
    $RPM_BUILD_ROOT%{_sbindir}/nginx.debug
 
@@ -309,13 +332,13 @@ BANNER
         if [ ! -e %{_localstatedir}/log/nginx/access.log ]; then
             touch %{_localstatedir}/log/nginx/access.log
             %{__chmod} 640 %{_localstatedir}/log/nginx/access.log
-            %{__chown} nginx:adm %{_localstatedir}/log/nginx/access.log
+            %{__chown} nginx:%{nginx_loggroup} %{_localstatedir}/log/nginx/access.log
         fi
 
         if [ ! -e %{_localstatedir}/log/nginx/error.log ]; then
             touch %{_localstatedir}/log/nginx/error.log
             %{__chmod} 640 %{_localstatedir}/log/nginx/error.log
-            %{__chown} nginx:adm %{_localstatedir}/log/nginx/error.log
+            %{__chown} nginx:%{nginx_loggroup} %{_localstatedir}/log/nginx/error.log
         fi
     fi
 fi
@@ -342,6 +365,12 @@ if [ $1 -ge 1 ]; then
 fi
 
 %changelog
+* Tue Apr 21 2015 Sergey Budnevitch <sb@nginx.com>
+- 1.8.0
+
+* Tue Apr  7 2015 Sergey Budnevitch <sb@nginx.com>
+- 1.6.3
+
 * Tue Sep 16 2014 Sergey Budnevitch <sb@nginx.com>
 - epoch added to the EPEL7/CentOS7 spec to override EPEL one
 - 1.6.2
