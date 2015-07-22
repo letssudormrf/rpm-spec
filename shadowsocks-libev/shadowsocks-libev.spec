@@ -1,12 +1,12 @@
-%global commit 39f72a0545234063b2b884649e810da09b1d8b22
+%global commit 53ddb3b4d2407ccae99e585985d93aa407213657
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:		shadowsocks-libev
-Version:	2.2.0
+Version:	2.2.3
 Release:	1%{?dist}
 License:	GPL-3
 Summary:	a lightweight secured scoks5 proxy for embedded devices and low end boxes.
-Url:		https://github.com/madeye/%{name}
+Url:		https://github.com/shadowsocks/%{name}
 Group:		Applications/Internet
 Source0:	%{url}/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
 Source1:	%{name}.json
@@ -75,6 +75,8 @@ fi
 %endif
 
 %changelog
+* Wed July 22 2015 Register <registerdedicated(at)gmail.com> - 2.2.3
+- version bump to 2.2.3
 * Thu May 7 2015 Register <registerdedicated(at)gmail.com> - 2.2.0
 - version bump to 2.2.0
 * Fri Dec 19 2014 Havanna <registerdedicated(at)gmail.com> - 1.6.1-1
