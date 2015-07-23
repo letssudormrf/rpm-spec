@@ -13,7 +13,7 @@ Source1:	%{name}.json
 Source2:	ss-local.service
 Source3:	ss-server.service
 Source4:	%{name}
-Packager:	Havanna <registerdedicated(at)gmail.com>
+Packager:	Register <registerdedicated(at)gmail.com>
 BuildRequires:	autoconf libtool gcc openssl-devel
 BuildRoot: 	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXX)
 
@@ -24,7 +24,6 @@ shadowsocks-libev is a lightweight secured scoks5 proxy for embedded devices and
 %setup -qn %{name}-%{commit}
 
 %build
-export CFLAGS="-O2"
 %configure --prefix=%{_prefix}
 make %{?_smp_mflags}
 
@@ -81,11 +80,11 @@ fi
 * Thu May 7 2015 Register <registerdedicated(at)gmail.com> - 2.2.0
 - version bump to 2.2.0
 
-* Fri Dec 19 2014 Havanna <registerdedicated(at)gmail.com> - 1.6.1-1
+* Fri Dec 19 2014 Register <registerdedicated(at)gmail.com> - 1.6.1-1
 - version bump to 1.6.1
 
-* Fri Nov 21 2014 Havanna <registerdedicated(at)gmail.com> - 1.5.3-1
+* Fri Nov 21 2014 Register <registerdedicated(at)gmail.com> - 1.5.3-1
 - version bump to 1.5.3
 
-* Fri Sep 12 2014 Havanna <registerdedicated(at)gmail.com> - 1.4.7-1
+* Fri Sep 12 2014 Register <registerdedicated(at)gmail.com> - 1.4.7-1
 - version bump to 1.4.7
