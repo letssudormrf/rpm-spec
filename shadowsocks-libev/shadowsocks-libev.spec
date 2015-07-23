@@ -75,13 +75,17 @@ fi
 %endif
 
 %changelog
-* Wed July 22 2015 Register <registerdedicated(at)gmail.com> - 2.2.3
+* Wed Jul 22 2015 Register <registerdedicated(at)gmail.com> - 2.2.3
 - version bump to 2.2.3
+
 * Thu May 7 2015 Register <registerdedicated(at)gmail.com> - 2.2.0
 - version bump to 2.2.0
+
 * Fri Dec 19 2014 Havanna <registerdedicated(at)gmail.com> - 1.6.1-1
 - version bump to 1.6.1
+
 * Fri Nov 21 2014 Havanna <registerdedicated(at)gmail.com> - 1.5.3-1
 - version bump to 1.5.3
+
 * Fri Sep 12 2014 Havanna <registerdedicated(at)gmail.com> - 1.4.7-1
 - version bump to 1.4.7
