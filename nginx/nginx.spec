@@ -1,4 +1,4 @@
-%global ngx_http_google_filter_module_commit 3785965c1cd30f8144e039d82fb2de0c1e95a38b
+%global ngx_http_google_filter_module_commit fe9f35206941fd1a22cf29e828c34b63ca7ced81
 %global ngx_http_substitutions_filter_module_commit 04dfb4c66c854a0627a5c3b940695b5fd6553b8b
 
 #
