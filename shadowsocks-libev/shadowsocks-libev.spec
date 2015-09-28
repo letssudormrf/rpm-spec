@@ -16,13 +16,6 @@ Source4:	%{name}
 Packager:	Register <registerdedicated(at)gmail.com>
 BuildRequires:	autoconf libtool gcc openssl-devel
 BuildRoot: 	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXX)
-%if 0%{?rhel} >= 7
-	Requires(post): systemd
-	Requires(preun): systemd
-	Requires(postun): systemd
-	BuildRequires: systemd
-%endif
-
 
 %description
 shadowsocks-libev is a lightweight secured scoks5 proxy for embedded devices and low end boxes.
