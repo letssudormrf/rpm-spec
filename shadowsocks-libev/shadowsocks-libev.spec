@@ -1,6 +1,3 @@
-%global commit ad4fdeb364283487a102da1aa79f5a603d831559
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
-
 Name:		shadowsocks-libev
 Version:	2.4.0
 Release:	1%{?dist}
@@ -8,7 +5,7 @@ License:	GPL-3
 Summary:	a lightweight secured scoks5 proxy for embedded devices and low end boxes.
 Url:		https://github.com/shadowsocks/%{name}
 Group:		Applications/Internet
-Source0:	%{url}/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
+Source0:	%{url}/archive/v%{version}.tar.gz
 Source1:	config.json
 Source2:	%{name}-local@.service
 Source3:	%{name}@.service
@@ -21,7 +18,7 @@ BuildRoot: 	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXX)
 shadowsocks-libev is a lightweight secured scoks5 proxy for embedded devices and low end boxes.
 
 %prep
-%setup -qn %{name}-%{commit}
+%setup -q
 
 %build
 %configure --prefix=%{_prefix} --enable-shared
