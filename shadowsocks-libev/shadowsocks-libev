@@ -28,7 +28,7 @@ DAEMON=/usr/bin/ss-server
 
 # Path to the configuration file.
 #
-CONF=/etc/shadowsocks-libev.json
+CONF=/etc/shadowsocks-libev/config.json
 
 #USER="nobody"
 #GROUP="nobody"
