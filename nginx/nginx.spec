@@ -61,7 +61,7 @@ Requires: systemd
 
 Summary: High performance web server
 Name: nginx
-Version: 1.8.0
+Version: 1.8.1
 Release: 1%{?dist}.ngx
 Vendor: nginx inc.
 URL: http://nginx.org/
@@ -106,7 +106,6 @@ Not stripped version of nginx built with the debugging log support.
 %prep
 %setup -q
 
-#%setup -qn ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit}
 %{__tar} xzvf %{SOURCE11}
 %setup -T -D -a 11
 %{__tar} xzvf %{SOURCE12}
@@ -148,8 +147,8 @@ Not stripped version of nginx built with the debugging log support.
         --with-debug \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-		--add-module=%{_builddir}/%{name}-%{version}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit} \
-		--add-module=%{_builddir}/%{name}-%{version}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit} \
+        --add-module=%{_builddir}/%{name}-%{version}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit} \
+        --add-module=%{_builddir}/%{name}-%{version}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit} \
         $*
 make %{?_smp_mflags}
 %{__mv} %{_builddir}/%{name}-%{version}/objs/nginx \
@@ -188,8 +187,8 @@ make %{?_smp_mflags}
         --with-ipv6 \
         %{?with_spdy:--with-http_spdy_module} \
         --with-cc-opt="%{optflags} $(pcre-config --cflags)" \
-		--add-module=%{_builddir}/%{name}-%{version}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit} \
-		--add-module=%{_builddir}/%{name}-%{version}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit} \
+        --add-module=%{_builddir}/%{name}-%{version}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit} \
+        --add-module=%{_builddir}/%{name}-%{version}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit} \
         $*
 make %{?_smp_mflags}
 
@@ -365,6 +364,9 @@ if [ $1 -ge 1 ]; then
 fi
 
 %changelog
+* Tue Jan 26 2016 Konstantin Pavlov <thresh@nginx.com>
+- 1.8.1
+
 * Tue Apr 21 2015 Sergey Budnevitch <sb@nginx.com>
 - 1.8.0
 
