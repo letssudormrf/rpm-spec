@@ -1,6 +1,12 @@
 ihavee-rpm
 ==========
 
+- dnscrypt-proxy
+- nginx
+    - ngx_http_google_filter_module
+    - ngx_http_substitutions_filter_module
+- shadowsocks-libev
+
 Spec and source file to build rpms
 
     echo "%_topdir %(echo $HOME)/rpmbuild" >> ~/.rpmmacros
