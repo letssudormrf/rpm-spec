@@ -150,7 +150,7 @@ Source11: nginx-debug.service
 Source12: COPYRIGHT
 Source13: http://hg.nginx.org/njs/archive/%{module_njs_shaid}.tar.gz
 Source14: https://github.com/yaoweibin/ngx_http_substitutions_filter_module/archive/%{ngx_http_substitutions_filter_module_commit}/ngx_http_substitutions_filter_module-%{ngx_http_substitutions_filter_module_commit}.tar.gz
-Source15: s/archive/%{ngx_http_google_filter_module_commit}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit}.tar.gz
+Source15: https://github.com/cuber/ngx_http_google_filter_module/archive/%{ngx_http_google_filter_module_commit}/ngx_http_google_filter_module-%{ngx_http_google_filter_module_commit}.tar.gz
 
 License: 2-clause BSD-like license
 
