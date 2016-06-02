@@ -81,13 +81,13 @@ fi
 %endif
 
 %changelog
-* Mon June 2 2016 Register <registerdedicated(at)gmail.com> - 2.4.7
+* Thu Jun 2 2016 Register <registerdedicated(at)gmail.com> - 2.4.7
 - version bump to 2.4.7
 
-* Mon Dec 15 2015 Register <registerdedicated(at)gmail.com> - 2.4.5
+* Mon Feb 1 2016 2015 Register <registerdedicated(at)gmail.com> - 2.4.5
 - version bump to 2.4.5
 
-* Mon Dec 15 2015 Register <registerdedicated(at)gmail.com> - 2.4.4
+* Wed Jan 13 2016 Register <registerdedicated(at)gmail.com> - 2.4.4
 - version bump to 2.4.4
 
 * Mon Dec 15 2015 Register <registerdedicated(at)gmail.com> - 2.4.1
