@@ -75,6 +75,10 @@ if [ ! -d %{_localstatedir}/lib/dnscrypt ]; then
 fi
 
 %changelog
+* Mon Aug 1 2016 Register <registerdedicated@gmail.com>
+- Bump version
+- 1.7.0
+
 * Wed Apr 27 2016 Register <registerdedicated@gmail.com>
 - Bump version
 - 1.6.1
