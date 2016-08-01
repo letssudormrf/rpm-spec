@@ -2,7 +2,7 @@
 %define dnscrypt_group dnscrypt
 
 Name:           dnscrypt-proxy
-Version:        1.6.1
+Version:        1.7.0
 Release:        1%{?dist}
 Summary:        A tool for securing communications between a client and a DNS resolver.
 License:        ISC
