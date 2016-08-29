@@ -1,5 +1,5 @@
 Name:		shadowsocks-libev
-Version:	2.4.7
+Version:	2.5.0
 Release:	1%{?dist}
 License:	GPL-3
 Summary:	a lightweight secured scoks5 proxy for embedded devices and low end boxes.
@@ -11,8 +11,10 @@ Source2:	%{name}-local@.service
 Source3:	%{name}@.service
 Source4:	%{name}
 Packager:	Register <registerdedicated(at)gmail.com>
-BuildRequires:	autoconf libtool gcc openssl-devel
+BuildRequires:	asciidoc autoconf libtool gcc openssl-devel xmlto
 BuildRoot: 	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXX)
+
+Requires:       openssl
 
 %description
 shadowsocks-libev is a lightweight secured scoks5 proxy for embedded devices and low end boxes.
@@ -42,13 +44,13 @@ install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/%{name}
 
 %files
 %defattr(-,root,root)
-%doc Changes README.md COPYING LICENSE
+%doc %{_docdir}/*
 %config(noreplace) %{_sysconfdir}
 
 %{_includedir}
 %{_libdir}/*
 %{_bindir}/*
-%{_mandir}
+%{_mandir}/*
 
 %if 0%{?rhel} >= 7
 	%config %{_unitdir}
@@ -81,6 +83,9 @@ fi
 %endif
 
 %changelog
+* Tue Aug 30 2016 Register <registerdedicated(at)gmail.com> - 2.5.0
+- version bump to 2.5.0
+
 * Thu Jun 2 2016 Register <registerdedicated(at)gmail.com> - 2.4.7
 - version bump to 2.4.7
 
@@ -90,7 +95,7 @@ fi
 * Wed Jan 13 2016 Register <registerdedicated(at)gmail.com> - 2.4.4
 - version bump to 2.4.4
 
-* Mon Dec 15 2015 Register <registerdedicated(at)gmail.com> - 2.4.1
+* Tue Dec 15 2015 Register <registerdedicated(at)gmail.com> - 2.4.1
 - version bump to 2.4.1
 
 * Mon Sep 28 2015 Register <registerdedicated(at)gmail.com> - 2.4.0
