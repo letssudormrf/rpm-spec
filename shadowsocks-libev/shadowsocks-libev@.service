@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=nobody
-ExecStart=/usr/bin/ss-server -c /etc/shadowsocks-libev/%i.json
+ExecStart=/usr/bin/ss-server -c /etc/shadowsocks-libev/%i.json -u -A
 
 [Install]
 WantedBy=multi-user.target
