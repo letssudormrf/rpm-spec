@@ -1,5 +1,5 @@
 Name:		shadowsocks-libev
-Version:	2.5.0
+Version:	2.5.6
 Release:	1%{?dist}
 License:	GPL-3
 Summary:	a lightweight secured scoks5 proxy for embedded devices and low end boxes.
