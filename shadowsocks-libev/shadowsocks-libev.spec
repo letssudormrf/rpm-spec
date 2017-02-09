@@ -1,83 +1,145 @@
 Name:		shadowsocks-libev
-Version:	2.5.6
+Version:	3.0.1
 Release:	1%{?dist}
-License:	GPL-3
-Summary:	a lightweight secured scoks5 proxy for embedded devices and low end boxes.
-Url:		https://github.com/shadowsocks/%{name}
-Group:		Applications/Internet
-Source0:	%{url}/archive/v%{version}.tar.gz
-Source1:	config.json
-Source2:	%{name}-local@.service
-Source3:	%{name}@.service
-Source4:	%{name}
-Packager:	Register <registerdedicated(at)gmail.com>
-BuildRequires:	asciidoc autoconf libtool gcc openssl-devel xmlto
-BuildRoot: 	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXX)
+Summary:	A lightweight and secure socks5 proxy
 
-Requires:       openssl
+Group:		Applications/Internet
+License:	GPLv3+
+URL:		https://github.com/shadowsocks/%{name}
+Source0:	%{url}/releases/download/v%{version}/%{name}-%{version}.tar.gz
+AutoReq:        no
+Conflicts:	python-shadowsocks python3-shadowsocks
+BuildRequires:	make gcc libsodium mbedtls-devel asciidoc xmlto
+Requires:       pcre mbedtls
+
+%if 0%{?fedora} >= 15 || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
+%global use_systemd 1
+%else
+%global use_systemd 0
+%endif
+
+%if 0%{?use_systemd}
+%{?systemd_requires}
+%if 0%{?suse_version}
+BuildRequires:   systemd-rpm-macros
+%else
+BuildRequires:   systemd
+%endif
+%endif
+
+%if 0%{?use_system_lib}
+BuildRequires:  libev-devel libsodium-devel >= 1.0.4 udns-devel
+Requires:       libev libsodium >= 1.0.4 udns
+%endif
+
 
 %description
 shadowsocks-libev is a lightweight secured scoks5 proxy for embedded devices and low end boxes.
 
+
 %prep
 %setup -q
 
+
 %build
-%configure --prefix=%{_prefix} --enable-shared
+%if 0%{?use_system_lib}
+%configure --enable-shared --enable-system-shared-lib
+%else
+%configure --enable-shared
+%endif
 make %{?_smp_mflags}
 
+
 %install
-rm -rf %{buildroot}
-make DESTDIR=%{buildroot} install
-
-install -d %{buildroot}%{_sysconfdir}/%{name}
-install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/%{name}
-
-%if 0%{?rhel} >= 7
-	install -d %{buildroot}%{_unitdir}
-	install -m 0644 %{SOURCE2} %{buildroot}%{_unitdir}
-	install -m 0644 %{SOURCE3} %{buildroot}%{_unitdir}
+make install DESTDIR=%{buildroot}
+mkdir -p %{buildroot}/etc/shadowsocks-libev
+%if ! 0%{?use_systemd}
+mkdir -p %{buildroot}%{_initddir}
+install -m 755 %{_builddir}/%{buildsubdir}/rpm/SOURCES/etc/init.d/shadowsocks-libev %{buildroot}%{_initddir}/shadowsocks-libev
 %else
-	install -d %{buildroot}%{_initddir}
-	install -m 0755 %{SOURCE4} %{buildroot}%{_initddir}
+mkdir -p %{buildroot}%{_sysconfdir}/default
+mkdir -p %{buildroot}%{_unitdir}
+install -m 644 %{_builddir}/%{buildsubdir}/debian/shadowsocks-libev.default %{buildroot}%{_sysconfdir}/default/shadowsocks-libev
+install -m 644 %{_builddir}/%{buildsubdir}/debian/shadowsocks-libev.service %{buildroot}%{_unitdir}/shadowsocks-libev.service
+install -m 644 %{_builddir}/%{buildsubdir}/debian/shadowsocks-libev-*.service %{buildroot}%{_unitdir}/
 %endif
+install -m 644 %{_builddir}/%{buildsubdir}/debian/config.json %{buildroot}%{_sysconfdir}/shadowsocks-libev/config.json
+mkdir -p %{buildroot}%{_datadir}/bash-completion/completions/
+install -m 644 %{_builddir}/%{buildsubdir}/completions/bash/* %{buildroot}%{_datadir}/bash-completion/completions/
 
-%files
-%defattr(-,root,root)
-%doc %{_docdir}/*
-%config(noreplace) %{_sysconfdir}
-
-%{_includedir}
-%{_libdir}/*
-%{_bindir}/*
-%{_mandir}/*
-
-%if 0%{?rhel} >= 7
-	%config %{_unitdir}
-%else
-	%config %{_initddir}
+%pre
+%if 0%{?use_systemd} && 0%{?suse_version}
+%service_add_pre shadowsocks-libev.service
 %endif
 
 %post
-if [ $1 -eq 1 ]; then
-%if 0%{?rhel} >= 7
-	%systemd_post %{name}@config.service
+%if ! 0%{?use_systemd}
+/sbin/chkconfig --add shadowsocks-libev > /dev/null 2>&1 || :
 %else
-	/sbin/chkconfig --add %{name}
+%if 0%{?suse_version}
+%service_add_post shadowsocks-libev.service
+%else
+%systemd_post shadowsocks-libev.service
 %endif
-fi
+%endif
 
 %preun
+%if ! 0%{?use_systemd}
 if [ $1 -eq 0 ]; then
-%if 0%{?rhel} >= 7
-	%systemd_preun %{name}@config.service
-%else
-	/sbin/service %{name} stop > /dev/null 2>&1
-	/sbin/chkconfig --del %{name}
-%endif
+    /sbin/service shadowsocks-libev stop  > /dev/null 2>&1 || :
+    /sbin/chkconfig --del shadowsocks-libev > /dev/null 2>&1 || :
 fi
+%else
+%if 0%{?suse_version}
+%service_del_preun shadowsocks-libev.service
+%else
+%systemd_preun shadowsocks-libev.service
+%endif
+%endif
 
 %postun
-%if 0%{?rhel} >= 7
-%systemd_postun_with_restart %{name}@config.service
+%if 0%{?use_systemd}
+%if 0%{?suse_version}
+%service_del_postun shadowsocks-libev.service
+%else
+%systemd_postun_with_restart shadowsocks-libev.service
 %endif
+%endif
+
+%files
+/usr/share/doc/shadowsocks-libev/shadowsocks-libev.html
+/usr/share/doc/shadowsocks-libev/ss-local.html
+/usr/share/doc/shadowsocks-libev/ss-manager.html
+/usr/share/doc/shadowsocks-libev/ss-nat.html
+/usr/share/doc/shadowsocks-libev/ss-redir.html
+/usr/share/doc/shadowsocks-libev/ss-server.html
+/usr/share/doc/shadowsocks-libev/ss-tunnel.html
+%{_bindir}/*
+%{_libdir}/*.so.*
+%config(noreplace) %{_sysconfdir}/shadowsocks-libev/config.json
+%{_datadir}/bash-completion/completions/*
+%doc %{_mandir}/*
+%if ! 0%{?use_systemd}
+%{_initddir}/shadowsocks-libev
+%else
+%{_unitdir}/shadowsocks-libev.service
+%{_unitdir}/shadowsocks-libev-*.service
+%config(noreplace) %{_sysconfdir}/default/shadowsocks-libev
+%endif
+
+%package devel
+Summary:    Development files for shadowsocks-libev
+Group:      Applications/Internet
+License:    GPLv3+
+Requires:   shadowsocks-libev == %{version}-%{release}
+
+%description devel
+Development files for shadowsocks-libev
+
+%files devel
+%{_includedir}/*
+%{_libdir}/pkgconfig/*.pc
+%{_libdir}/libshadowsocks-libev.la
+%{_libdir}/libshadowsocks-libev.so
+
+%changelog

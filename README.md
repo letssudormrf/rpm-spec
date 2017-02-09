@@ -21,4 +21,7 @@ build rpm package
 
 The spec has been tested only on Centos 6.5 and later, it should also work on recent Fedoras, too.
 
-You may need to modify version in the spec file
+You may need to modify version in the spec file, and may need to install **epel-release**
+
+    yum install epel-release
+
