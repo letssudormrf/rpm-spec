@@ -2,6 +2,7 @@ ihavee-rpm
 ==========
 
 - dnscrypt-proxy
+- libsodium
 - shadowsocks-libev
 
 Spec and source file to build rpms
