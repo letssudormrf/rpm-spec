@@ -1,16 +1,16 @@
-Name:		shadowsocks-libev
-Version:	3.0.1
-Release:	1%{?dist}
-Summary:	A lightweight and secure socks5 proxy
+Name:			shadowsocks-libev
+Version:		3.0.1
+Release:		1%{?dist}
+Summary:		A lightweight and secure socks5 proxy
 
-Group:		Applications/Internet
-License:	GPLv3+
-URL:		https://github.com/shadowsocks/%{name}
-Source0:	%{url}/releases/download/v%{version}/%{name}-%{version}.tar.gz
-AutoReq:        no
-Conflicts:	python-shadowsocks python3-shadowsocks
-BuildRequires:	make gcc libsodium mbedtls-devel asciidoc xmlto
-Requires:       pcre mbedtls
+Group:			Applications/Internet
+License:		GPLv3+
+URL:			https://github.com/shadowsocks/%{name}
+Source0:		%{url}/releases/download/v%{version}/%{name}-%{version}.tar.gz
+AutoReq:		no
+Conflicts:		python-shadowsocks python3-shadowsocks
+BuildRequires:	asciidoc make gcc libev-devel libsodium-devel mbedtls-devel udns-devel xmlto
+Requires:		libev libsodium mbedtls pcre udns
 
 %if 0%{?fedora} >= 15 || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
 %global use_systemd 1
@@ -27,19 +27,11 @@ BuildRequires:   systemd
 %endif
 %endif
 
-%if 0%{?use_system_lib}
-BuildRequires:  libev-devel libsodium-devel >= 1.0.4 udns-devel
-Requires:       libev libsodium >= 1.0.4 udns
-%endif
-
-
 %description
 shadowsocks-libev is a lightweight secured scoks5 proxy for embedded devices and low end boxes.
 
-
 %prep
 %setup -q
-
 
 %build
 %if 0%{?use_system_lib}
@@ -48,7 +40,6 @@ shadowsocks-libev is a lightweight secured scoks5 proxy for embedded devices and
 %configure --enable-shared
 %endif
 make %{?_smp_mflags}
-
 
 %install
 make install DESTDIR=%{buildroot}
@@ -128,10 +119,10 @@ fi
 %endif
 
 %package devel
-Summary:    Development files for shadowsocks-libev
-Group:      Applications/Internet
-License:    GPLv3+
-Requires:   shadowsocks-libev == %{version}-%{release}
+Summary:	Development files for shadowsocks-libev
+Group:		Applications/Internet
+License:	GPLv3+
+Requires:	shadowsocks-libev == %{version}-%{release}
 
 %description devel
 Development files for shadowsocks-libev
