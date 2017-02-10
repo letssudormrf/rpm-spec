@@ -30,3 +30,6 @@ The spec has been tested only on Centos 7 and later, it should also work on rece
 You may need to modify version in the spec file, and you may need to install **epel-release**
 
     yum install epel-release
+    yum install yum-plugin-copr
+    yum copr enable giste/shadowsocks
+    yum install shadowsocks-libev simple-obfs
