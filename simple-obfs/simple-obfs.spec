@@ -8,8 +8,8 @@ License:		GPLv3+
 URL:			https://github.com/shadowsocks/%{name}
 Source0:		%{url}/archive/v%{version}.tar.gz
 AutoReq:		no
-BuildRequires:	asciidoc, automake, gcc, libev-devel, libsodium-devel, make, mbedtls-devel, pcre-devel, udns-devel, xmlto, zlib-devel, xmlto
-Requires:		libev, libsodium > 1.0.8, udns, pcre, mbedtls
+BuildRequires:	asciidoc, automake, gcc, libev-devel, libsodium-devel >= 1.0.8, make, mbedtls-devel, pcre-devel, udns-devel, xmlto, zlib-devel, xmlto
+Requires:		libev, libsodium >= 1.0.8, udns, pcre, mbedtls
 
 
 %description
