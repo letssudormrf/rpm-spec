@@ -8,7 +8,7 @@ rpm-spec
 
 The spec has been tested only on Centos 7 and later, it should also work on recent Fedoras too.
 
-You may need to modify version in the spec file, and you may need to install **epel-release**
+You need to install **epel-release**
 
     yum install epel-release
     yum install yum-plugin-copr
