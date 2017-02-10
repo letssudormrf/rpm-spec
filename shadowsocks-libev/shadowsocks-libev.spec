@@ -9,7 +9,7 @@ URL:			https://github.com/shadowsocks/%{name}
 Source0:		%{url}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 AutoReq:		no
 Conflicts:		python-shadowsocks python3-shadowsocks
-BuildRequires:	asciidoc make gcc libev-devel libsodium-devel mbedtls-devel udns-devel xmlto
+BuildRequires:	asciidoc make gcc libev-devel libsodium-devel mbedtls-devel pcre udns-devel xmlto
 Requires:		libev libsodium mbedtls pcre udns
 
 %if 0%{?fedora} >= 15 || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
