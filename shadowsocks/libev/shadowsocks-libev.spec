@@ -21,9 +21,9 @@ Requires:		libev, libsodium >= 1.0.8, mbedtls, pcre, udns
 %if 0%{?use_systemd}
 %{?systemd_requires}
 %if 0%{?suse_version}
-BuildRequires:   systemd-rpm-macros
+BuildRequires:	systemd-rpm-macros
 %else
-BuildRequires:   systemd
+BuildRequires:	systemd
 %endif
 %endif
 
@@ -34,11 +34,7 @@ shadowsocks-libev is a lightweight secured scoks5 proxy for embedded devices and
 %setup -q
 
 %build
-%if 0%{?use_system_lib}
-%configure --enable-shared --enable-system-shared-lib
-%else
-%configure --enable-shared
-%endif
+%configure
 make %{?_smp_mflags}
 
 %install
@@ -98,18 +94,12 @@ fi
 %endif
 
 %files
-/usr/share/doc/shadowsocks-libev/shadowsocks-libev.html
-/usr/share/doc/shadowsocks-libev/ss-local.html
-/usr/share/doc/shadowsocks-libev/ss-manager.html
-/usr/share/doc/shadowsocks-libev/ss-nat.html
-/usr/share/doc/shadowsocks-libev/ss-redir.html
-/usr/share/doc/shadowsocks-libev/ss-server.html
-/usr/share/doc/shadowsocks-libev/ss-tunnel.html
+%{_docdir}/*
+%{_mandir}/man1/*
+%{_mandir}/man8/*
 %{_bindir}/*
-%{_libdir}/*.so.*
 %config(noreplace) %{_sysconfdir}/shadowsocks-libev/config.json
 %{_datadir}/bash-completion/completions/*
-%doc %{_mandir}/*
 %if ! 0%{?use_systemd}
 %{_initddir}/shadowsocks-libev
 %else
@@ -129,8 +119,8 @@ Development files for shadowsocks-libev
 
 %files devel
 %{_includedir}/*
-%{_libdir}/pkgconfig/*.pc
+%{_libdir}/pkgconfig/*
 %{_libdir}/libshadowsocks-libev.la
-%{_libdir}/libshadowsocks-libev.so
+%{_libdir}/libshadowsocks-libev.a
 
 %changelog
