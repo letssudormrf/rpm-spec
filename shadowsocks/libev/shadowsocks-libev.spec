@@ -1,5 +1,5 @@
 Name:			shadowsocks-libev
-Version:		3.0.3
+Version:		3.0.8
 Release:		1%{?dist}
 Summary:		A lightweight and secure socks5 proxy
 
@@ -9,8 +9,8 @@ URL:			https://github.com/shadowsocks/%{name}
 Source0:		%{url}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 AutoReq:		no
 Conflicts:		python-shadowsocks python3-shadowsocks
-BuildRequires:	asciidoc, make, gcc, libev-devel, libsodium-devel >= 1.0.8, mbedtls-devel, pcre-devel, udns-devel, xmlto
-Requires:		libev, libsodium >= 1.0.8, mbedtls, pcre, udns
+BuildRequires:	autoconf, automake, asciidoc, make, gawk, gcc, gettext, libev-devel, libsodium-devel >= 1.0.4, libtool, mbedtls-devel, pcre-devel, pkgconfig, udns-devel, xmlto, zlib-devel
+Requires:		libev, libsodium >= 1.0.4, mbedtls, pcre, udns, zlib
 
 %if 0%{?fedora} >= 15 || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
 %global use_systemd 1
