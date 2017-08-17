@@ -34,11 +34,10 @@ mv -f libcork-%{commit1} libcork
 make %{?_smp_mflags}
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install
 
 %files
 %defattr(-,root,root)
-
 %{_bindir}/*
 %{_mandir}/man1/*
 %{_docdir}/*
